@@ -1,0 +1,68 @@
+name: iOS CI (macOS Runner)
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test (macOS / Xcode)
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: carscan_ios
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode Version
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.4.app || sudo xcode-select -s /Applications/Xcode_15.3.app || sudo xcode-select -s /Applications/Xcode.app
+          xcodebuild -version
+          swift --version
+
+      - name: Install XcodeGen and Generate Xcode Project
+        run: |
+          which xcodegen || brew install xcodegen
+          xcodegen generate
+
+      - name: Run Swift Package Tests
+        run: |
+          swift test -v
+
+      - name: Build & Test for iOS Simulator (iPhone 15)
+        run: |
+          xcodebuild test \
+            -project CarScan.xcodeproj \
+            -scheme CarScanCoreTests \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -enableCodeCoverage YES \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty || xcodebuild test \
+            -project CarScan.xcodeproj \
+            -scheme CarScanCoreTests \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Build SwiftUI App Target (CarScanApp) for Generic iOS Device
+        run: |
+          xcodebuild build \
+            -project CarScan.xcodeproj \
+            -scheme CarScanApp \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Verify Generic iOS Device Compilation (CarScanCore)
+        run: |
+          xcodebuild build \
+            -project CarScan.xcodeproj \
+            -scheme CarScanCore \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGNING_ALLOWED=NO

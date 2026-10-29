@@ -1,0 +1,139 @@
+{
+  "version": "1.0.0",
+  "description": "Standard SAE J2012 DTCs and Ford/Mazda Enhanced Diagnostic Trouble Codes",
+  "statusByteMask": {
+    "0x01": "testFailed",
+    "0x02": "testFailedThisOperationCycle",
+    "0x04": "pendingDTC",
+    "0x08": "confirmedDTC",
+    "0x10": "testNotCompletedSinceLastClear",
+    "0x20": "testFailedSinceLastClear",
+    "0x40": "testNotCompletedThisOperationCycle",
+    "0x80": "warningIndicatorRequested"
+  },
+  "dtcs": [
+    {
+      "code": "P0101",
+      "system": "Powertrain",
+      "description": "Mass or Volume Air Flow Circuit Range/Performance",
+      "severity": "Medium",
+      "symptom": "Engine hesitation, rough idle, poor fuel economy."
+    },
+    {
+      "code": "P0113",
+      "system": "Powertrain",
+      "description": "Intake Air Temperature Sensor 1 Circuit High Input",
+      "severity": "Low",
+      "symptom": "Check Engine Light, possible rich fuel mixture."
+    },
+    {
+      "code": "P0118",
+      "system": "Powertrain",
+      "description": "Engine Coolant Temperature Circuit High Input",
+      "severity": "Medium",
+      "symptom": "Cooling fans running continuously, high idle."
+    },
+    {
+      "code": "P0171",
+      "system": "Powertrain",
+      "description": "System Too Lean (Bank 1)",
+      "severity": "Medium",
+      "symptom": "Vacuum leak, weak fuel pump, or contaminated MAF sensor."
+    },
+    {
+      "code": "P0300",
+      "system": "Powertrain",
+      "description": "Random/Multiple Cylinder Misfire Detected",
+      "severity": "High",
+      "symptom": "Flashing Check Engine Light, engine stumbling, catalytic converter damage risk."
+    },
+    {
+      "code": "P0301",
+      "system": "Powertrain",
+      "description": "Cylinder 1 Misfire Detected",
+      "severity": "High",
+      "symptom": "Rough idle, hesitation, ignition coil or spark plug failure."
+    },
+    {
+      "code": "P0420",
+      "system": "Powertrain",
+      "description": "Catalyst System Efficiency Below Threshold (Bank 1)",
+      "severity": "Low",
+      "symptom": "Catalytic converter degraded or downstream O2 sensor fault."
+    },
+    {
+      "code": "P1000",
+      "system": "Powertrain",
+      "description": "On-Board Diagnostic (OBD) Systems Readiness Test Not Complete",
+      "severity": "Informational",
+      "symptom": "Vehicle battery was disconnected or DTCs were recently cleared. Normal during drive cycle."
+    },
+    {
+      "code": "B11D9",
+      "system": "Body",
+      "description": "Vehicle Battery",
+      "subTypes": {
+        "09": "Component Failure (Internal electronic failure)",
+        "0A": "Component Low Resistance (Battery degradation or weak charge)"
+      },
+      "severity": "Medium",
+      "symptom": "Ford BMS reports 12V battery health degraded, low state of charge, or auto start-stop disabled."
+    },
+    {
+      "code": "B1318",
+      "system": "Body",
+      "description": "Battery Voltage Low",
+      "severity": "Medium",
+      "symptom": "System voltage dropped below 10.0V during cranking or operation."
+    },
+    {
+      "code": "C0031",
+      "system": "Chassis",
+      "description": "Left Front Wheel Speed Sensor",
+      "severity": "High",
+      "symptom": "ABS and Traction Control lights illuminated, cruise control disabled."
+    },
+    {
+      "code": "C0034",
+      "system": "Chassis",
+      "description": "Right Front Wheel Speed Sensor",
+      "severity": "High",
+      "symptom": "ABS warning light, wheel speed erratic or circuit open."
+    },
+    {
+      "code": "U0100",
+      "system": "Network",
+      "description": "Lost Communication With ECM/PCM 'A'",
+      "severity": "High",
+      "symptom": "CAN bus communication timeout with engine controller."
+    },
+    {
+      "code": "U0101",
+      "system": "Network",
+      "description": "Lost Communication with TCM",
+      "severity": "High",
+      "symptom": "CAN bus timeout with transmission controller."
+    },
+    {
+      "code": "U0121",
+      "system": "Network",
+      "description": "Lost Communication With Anti-Lock Brake System (ABS) Control Module",
+      "severity": "High",
+      "symptom": "ABS communication error on HS-CAN bus."
+    },
+    {
+      "code": "U0140",
+      "system": "Network",
+      "description": "Lost Communication With Body Control Module",
+      "severity": "Medium",
+      "symptom": "MS-CAN gateway or BCM offline."
+    },
+    {
+      "code": "U0155",
+      "system": "Network",
+      "description": "Lost Communication With Instrument Panel Cluster (IPC) Control Module",
+      "severity": "Medium",
+      "symptom": "Cluster gauges freeze or warning lights illuminate."
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "description": "Safe diagnostic self-tests by vehicle module (Read-only / RoutineControl)",
+  "tests": [
+    {
+      "id": "TEST_OBD2_MONITORS",
+      "moduleId": "PCM_GENERIC",
+      "moduleAcronym": "PCM",
+      "name": "Road system monitor status",
+      "type": "OBD2_MODE_01_01",
+      "command": "0101",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "description": "Reads continuous and non-continuous readiness monitor completion statuses."
+    },
+    {
+      "id": "TEST_OBD2_MODE6",
+      "moduleId": "PCM_GENERIC",
+      "moduleAcronym": "PCM",
+      "name": "Mode 6 - Test Results for Specific Monitored Systems",
+      "type": "OBD2_MODE_06",
+      "command": "0600",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "description": "Reads on-board diagnostic test limits and test values for non-continuously monitored components."
+    },
+    {
+      "id": "TEST_FORD_PCM_KOEO",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Key On Engine Off On Demand Self-Test",
+      "shortName": "KOEO Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0301",
+      "startCommand": "31010301",
+      "requiresEngineOff": true,
+      "requiresKeyOn": true,
+      "estimatedDurationSec": 25,
+      "description": "Commands the PCM to execute internal circuitry tests and sensor check with engine off and ignition on."
+    },
+    {
+      "id": "TEST_FORD_PCM_KOER",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Key On Engine Running On Demand Self-Test",
+      "shortName": "KOER Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0302",
+      "startCommand": "31010302",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": true,
+      "estimatedDurationSec": 35,
+      "description": "Tests active actuators, idle air control, EGR, and misfire detection with engine running at idle."
+    },
+    {
+      "id": "TEST_FORD_APIM_ODST",
+      "moduleId": "FORD_APIM",
+      "moduleAcronym": "APIM",
+      "name": "On Demand Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0100",
+      "startCommand": "31010100",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "estimatedDurationSec": 10,
+      "description": "Accessory Protocol Interface Module self-check (touchscreen, USB, Bluetooth, audio outputs)."
+    },
+    {
+      "id": "TEST_FORD_PAM_ODST",
+      "moduleId": "FORD_PAM",
+      "moduleAcronym": "PAM",
+      "name": "On Demand Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0100",
+      "startCommand": "31010100",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "estimatedDurationSec": 8,
+      "description": "Ultrasonic park sensor transceiver integrity test."
+    },
+    {
+      "id": "TEST_FORD_BCM_ODST",
+      "moduleId": "FORD_BCM",
+      "moduleAcronym": "BCM",
+      "name": "On Demand Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0100",
+      "startCommand": "31010100",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "estimatedDurationSec": 12,
+      "description": "Checks body control relay outputs, lamp circuits, and smart key antennae."
+    },
+    {
+      "id": "TEST_FORD_ABS_ODST",
+      "moduleId": "FORD_ABS",
+      "moduleAcronym": "ABS",
+      "name": "On Demand Self-Test",
+      "type": "UDS_ROUTINE_CONTROL",
+      "routineId": "0100",
+      "startCommand": "31010100",
+      "requiresEngineOff": false,
+      "requiresEngineRunning": false,
+      "estimatedDurationSec": 10,
+      "description": "ABS solenoid valve electrical tests and wheel speed sensor circuit verification."
+    }
+  ]
+}

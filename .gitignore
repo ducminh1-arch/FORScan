@@ -1,0 +1,12 @@
+build/
+.gradle/
+.idea/
+local.properties
+*.iml
+.DS_Store
+__pycache__/
+*.pyc
+.build/
+DerivedData/
+xcuserdata/
+tools/generate_app_icons.py

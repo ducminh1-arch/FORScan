@@ -1,0 +1,66 @@
+# GitLab CI Configuration for CarScan iOS (SwiftUI App & CarScanCore)
+# Requires macOS runner with Xcode 15+ installed
+
+stages:
+  - generate
+  - test
+  - build
+
+default:
+  tags:
+    - saas-macos-medium-m2 # Default GitLab SaaS macOS runner tag (Apple Silicon M2)
+
+variables:
+  DEVELOPER_DIR: "/Applications/Xcode_15.4.app/Contents/Developer"
+
+generate_project:
+  stage: generate
+  script:
+    - echo "=== Generating Xcode Project via XcodeGen ==="
+    - which xcodegen || brew install xcodegen
+    - xcodegen generate
+  artifacts:
+    paths:
+      - CarScan.xcodeproj/
+    expire_in: 1 day
+
+test_core:
+  stage: test
+  needs:
+    - generate_project
+  script:
+    - echo "=== Checking Environment ==="
+    - xcodebuild -version
+    - swift --version
+    - echo "=== Running Swift Package Tests ==="
+    - swift test -v
+    - echo "=== Running Tests on iOS Simulator (iPhone 15) ==="
+    - >
+      xcodebuild test
+      -project CarScan.xcodeproj
+      -scheme CarScanCoreTests
+      -destination 'platform=iOS Simulator,name=iPhone 15'
+      CODE_SIGNING_ALLOWED=NO
+      | xcpretty || xcodebuild test -project CarScan.xcodeproj -scheme CarScanCoreTests -destination 'platform=iOS Simulator,name=iPhone 15' CODE_SIGNING_ALLOWED=NO
+
+build_app:
+  stage: build
+  needs:
+    - generate_project
+  script:
+    - echo "=== Building SwiftUI App Target (CarScanApp) for Generic iOS Device ==="
+    - >
+      xcodebuild build
+      -project CarScan.xcodeproj
+      -scheme CarScanApp
+      -destination 'generic/platform=iOS'
+      CODE_SIGNING_ALLOWED=NO
+      | xcpretty || xcodebuild build -project CarScan.xcodeproj -scheme CarScanApp -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO
+    - echo "=== Building CarScanCore Library for Generic iOS Device ==="
+    - >
+      xcodebuild build
+      -project CarScan.xcodeproj
+      -scheme CarScanCore
+      -destination 'generic/platform=iOS'
+      CODE_SIGNING_ALLOWED=NO
+      | xcpretty || xcodebuild build -project CarScan.xcodeproj -scheme CarScanCore -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO

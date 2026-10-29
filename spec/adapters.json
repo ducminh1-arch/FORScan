@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "description": "OBD2 / CAN Adapter Hardware Profiles and Bus-Switching Commands",
+  "adapters": [
+    {
+      "id": "ELM327_GENERIC",
+      "name": "Standard ELM327 (or clone)",
+      "chipFamily": "ELM327",
+      "detection": {
+        "command": "ATI",
+        "pattern": "(?i)ELM327.*v(?<version>1\\.[0-5]|2\\.[0-3])"
+      },
+      "capabilities": {
+        "multiPidMax": 6,
+        "autoBusSwitch": false,
+        "supportedBuses": ["HS-CAN", "MS-CAN"]
+      },
+      "busSwitching": {
+        "type": "manual_switch",
+        "verified": true,
+        "status": "verified",
+        "source": "ELM Electronics ELM327 v1.4b / v2.1 Datasheet (https://www.elmelectronics.com/wp-content/uploads/2016/07/ELM327DS.pdf)",
+        "officialExcerpt": "The ELM327 supports ISO 15765-4 CAN protocols via standard CAN pins. Standard chips have no internal multiplexer; connection to alternate CAN pins (e.g. Ford MS-CAN pins 3/11) requires external physical DPDT switching.",
+        "description": "Standard ELM327 has a single CAN transceiver connected to OBD pins 6/14. MS-CAN (pins 3/11) access requires a physical DPDT switch or external cable adapter.",
+        "hsCan": {
+          "commands": ["ATSP6"],
+          "prompt": "Ensure adapter switch is set to HS-CAN (OBD pins 6/14)"
+        },
+        "msCan": {
+          "commands": ["ATSPB"],
+          "prompt": "Flip adapter switch to MS-CAN (OBD pins 3/11)"
+        }
+      }
+    },
+    {
+      "id": "OBDLINK_STN",
+      "name": "OBDLink (STN11xx / STN21xx / EX / MX / MX+ / LX / CX)",
+      "chipFamily": "STN",
+      "detection": {
+        "command": "STI",
+        "pattern": "(?i)(STN|OBDLink).*",
+        "modelCommand": "STDI",
+        "modelPatterns": {
+          "OBDLink EX": {"hasMsCan": true, "autoBusSwitch": true, "type": "USB"},
+          "OBDLink MX+": {"hasMsCan": true, "autoBusSwitch": true, "type": "Bluetooth"},
+          "OBDLink MX": {"hasMsCan": true, "autoBusSwitch": true, "type": "Bluetooth"},
+          "OBDLink LX": {"hasMsCan": false, "autoBusSwitch": false, "type": "Bluetooth", "note": "HS-CAN only. Lacks MS-CAN transceiver on pins 3/11."},
+          "OBDLink CX": {"hasMsCan": false, "autoBusSwitch": false, "type": "BLE", "note": "HS-CAN only. Lacks MS-CAN transceiver on pins 3/11."},
+          "OBDLink SX": {"hasMsCan": false, "autoBusSwitch": false, "type": "USB", "note": "HS-CAN only. Lacks MS-CAN transceiver on pins 3/11."},
+          "STN1170": {"hasMsCan": true, "autoBusSwitch": true, "type": "Integrated multiplexer"},
+          "STN2120": {"hasMsCan": true, "autoBusSwitch": true, "type": "Integrated multiplexer"},
+          "STN1110": {"hasMsCan": false, "autoBusSwitch": false, "type": "Single CAN only"}
+        }
+      },
+      "capabilities": {
+        "multiPidMax": 6,
+        "autoBusSwitch": true,
+        "supportedBuses": ["HS-CAN", "MS-CAN", "SW-CAN"]
+      },
+      "busSwitching": {
+        "type": "electronic",
+        "verified": true,
+        "status": "verified",
+        "source": "OBDLink FRPM rev F, section 8.6 'Set Protocol (STP)', page 34",
+        "description": "STN chips and OBDLink adapters with dual CAN transceivers (EX, MX, MX+, STN1170, STN2120) use STP 33 for HS-CAN and STP 53 for MS-CAN. Note: STP 31/51 are raw CAN presets (ISO 11898) without multi-frame ISO-TP reassembly, whereas STP 33/53 implement ISO 15765-4 with automatic multi-frame assembly.",
+        "hsCan": {
+          "commands": ["STP33"],
+          "protocol": "ISO 15765-4 11-bit 500kbps (HS-CAN pins 6/14)"
+        },
+        "msCan": {
+          "commands": ["STP53"],
+          "protocol": "ISO 15765-4 11-bit 125kbps (MS-CAN pins 3/11)"
+        }
+      }
+    },
+    {
+      "id": "VLINKER_FS",
+      "name": "vLinker (FS / MC / MC+ / FD / FD+)",
+      "chipFamily": "vLinker",
+      "detection": {
+        "command": "ATI",
+        "pattern": "(?i)(vLinker|Vgate).*"
+      },
+      "capabilities": {
+        "multiPidMax": 6,
+        "autoBusSwitch": true,
+        "supportedBuses": ["HS-CAN", "MS-CAN", "SW-CAN"]
+      },
+      "busSwitching": {
+        "type": "electronic",
+        "verified": false,
+        "status": "unverified",
+        "source": "UNVERIFIED: No official manufacturer documentation found in Vgate reference manuals or datasheets (https://www.vgatemall.com/downloadcenter). Commands ATHSCAN / ATMSCAN are undocumented community findings.",
+        "notes": "unverified: ATHSCAN and ATMSCAN commands have no official published documentation from Vgate/OEM. Adapter will return '?' if firmware does not support them.",
+        "description": "vLinker adapters implement electronic CAN transceiver routing. However, ATHSCAN and ATMSCAN lack official vendor documentation and are marked unverified.",
+        "hsCan": {
+          "commands": ["ATHSCAN", "ATSP6"],
+          "protocol": "HS-CAN 500kbps (pins 6/14)",
+          "verified": false
+        },
+        "msCan": {
+          "commands": ["ATMSCAN", "ATSPB"],
+          "protocol": "MS-CAN 125kbps (pins 3/11)",
+          "verified": false
+        }
+      }
+    }
+  ]
+}

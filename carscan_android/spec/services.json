@@ -1,0 +1,155 @@
+{
+  "version": "1.0.0",
+  "description": "Safe service procedures by module with risk levels and safety pre-conditions",
+  "services": [
+    {
+      "id": "SERV_PCM_RESET_ADAPTATIONS",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Reset All Adaptations",
+      "riskLevel": "Low",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0201",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.5
+      },
+      "confirmationPrompt": "Are you sure you want to reset all engine fuel trim and learned throttle adaptations? The vehicle may idle slightly roughly during initial relearn drive.",
+      "description": "Clears learned fuel trim values, throttle body position offsets, and adaptive idle control tables."
+    },
+    {
+      "id": "SERV_PCM_HALT_TRANS_ADAPTIVE",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Halt Transmission Adaptive Learning",
+      "riskLevel": "Low",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0202",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.5
+      },
+      "confirmationPrompt": "This will pause automatic clutch and shift pressure adaptive learning until the next ignition cycle.",
+      "description": "Temporarily freezes adaptive shift scheduling and clutch fill times for diagnostic evaluation."
+    },
+    {
+      "id": "SERV_PCM_MISFIRE_PROFILE_CORRECTION",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Misfire Monitor Neutral Profile Correction",
+      "riskLevel": "Medium",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0203",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.8
+      },
+      "confirmationPrompt": "Resets the crankshaft position sensor tooth variation table stored in PCM. Requires an uninterrupted decel fuel shut-off drive cycle after completion.",
+      "description": "Resets mechanical crankshaft sensor profile learning after clutch, flywheel, or sensor replacement."
+    },
+    {
+      "id": "SERV_PCM_REBOOT",
+      "moduleId": "FORD_PCM",
+      "moduleAcronym": "PCM",
+      "name": "Module Reboot",
+      "riskLevel": "Low",
+      "commandType": "UDS_ECU_RESET",
+      "subFunction": "01",
+      "command": "1101",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.0
+      },
+      "confirmationPrompt": "Performing ECU Hard Reset on Powertrain Control Module. The module will temporarily cycle offline and re-initialize.",
+      "description": "Sends UDS Service 0x11 (ECUReset HardReset) to reboot the engine ECU."
+    },
+    {
+      "id": "SERV_APIM_REBOOT",
+      "moduleId": "FORD_APIM",
+      "moduleAcronym": "APIM",
+      "name": "Module Reboot",
+      "riskLevel": "Low",
+      "commandType": "UDS_ECU_RESET",
+      "subFunction": "01",
+      "command": "1101",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.0
+      },
+      "confirmationPrompt": "Reboot the Ford SYNC APIM infotainment system? The center screen will restart.",
+      "description": "Performs a soft/hard restart of the SYNC console unit to resolve bluetooth or screen freeze issues."
+    },
+    {
+      "id": "SERV_PAM_REBOOT",
+      "moduleId": "FORD_PAM",
+      "moduleAcronym": "PAM",
+      "name": "Module Reboot",
+      "riskLevel": "Low",
+      "commandType": "UDS_ECU_RESET",
+      "subFunction": "01",
+      "command": "1101",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.0
+      },
+      "confirmationPrompt": "Reboot Parking Aid Module?",
+      "description": "Restarts the parking aid controller to reset temporary sensor fault states."
+    },
+    {
+      "id": "SERV_BCM_REAR_CAMERA_CALIB",
+      "moduleId": "FORD_BCM",
+      "moduleAcronym": "BCM",
+      "name": "Rear Camera Calibration",
+      "riskLevel": "Medium",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0401",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.8,
+        "vehicleStationary": true
+      },
+      "confirmationPrompt": "Ensure vehicle is parked on a flat surface with parking guidelines unobstructed before starting camera calibration.",
+      "description": "Initiates dynamic or static alignment routine for reverse camera guideline trajectory."
+    },
+    {
+      "id": "SERV_BCM_LIN_NEW_MODULE_CALIB",
+      "moduleId": "FORD_BCM",
+      "moduleAcronym": "BCM",
+      "name": "Local Interconnect Network New Module Calibration",
+      "riskLevel": "Medium",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0402",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.8
+      },
+      "confirmationPrompt": "This will register new LIN bus slave devices (e.g. alternator regulator, wiper motor, battery sensor) with BCM.",
+      "description": "Teaches the BCM addressing and calibration for newly replaced LIN sub-bus actuators."
+    },
+    {
+      "id": "SERV_BCM_TPMS_LEARN",
+      "moduleId": "FORD_BCM",
+      "moduleAcronym": "BCM",
+      "name": "Tire pressure monitor learning mode",
+      "riskLevel": "Low",
+      "commandType": "UDS_ROUTINE_CONTROL",
+      "routineId": "0403",
+      "preconditions": {
+        "engineRunning": false,
+        "ignitionOn": true,
+        "minBatteryVoltage": 11.5,
+        "vehicleStationary": true
+      },
+      "confirmationPrompt": "Enter TPMS sensor relearn mode? The horn will chirp once when learning mode is active.",
+      "description": "Puts BCM TPMS receiver into 125kHz training mode to pair wheel sensor RF IDs (LF, RF, RR, LR)."
+    }
+  ]
+}
